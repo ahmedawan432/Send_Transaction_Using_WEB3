@@ -1,5 +1,4 @@
 # Send_Transaction_Using_WEB3
-# Send Transaction using web3
 
 Write a contract, build and deploy it using truffle on Rinkeby testnet. Write a JavaScript code to sign and send a transaction to the deployed contract. Write a JavaScript code to get the transaction (calling a getter function).
 
