@@ -1,5 +1,4 @@
-#Send Transaction using web3
-
+Send Transaction using web3
 Write a contract, build and deploy it using truffle on Rinkeby testnet. Write a JavaScript code to sign and send a transaction to the deployed contract. Write a JavaScript code to get the transaction (calling a getter function).
 
 Roadmap
@@ -48,10 +47,13 @@ npm init -y
 npx truffle init
 Now replace Migrations.sol contract with your custom contract in the contracts folder
 //SPDX-License-Identifier:GPL-3.0
+
 pragma solidity >= 0.7.0 <0.9.0;
+
 contract SendTx
 {
     uint public number;
+
     /**
     * @dev set function is used to set the value of number.
     * @param _num - Will be assigned to variable number.
@@ -59,6 +61,7 @@ contract SendTx
     function set(uint _num) public{
         number = _num;
     }
+
     /**
      * @dev get function is used to get the value of number.
      */
@@ -70,11 +73,11 @@ contract SendTx
 Now replace the 1_Migrations.js file with the following file
 
 const SendTx = artifacts.require("SendTx");
+
 module.exports = function (deployer) {
   deployer.deploy(SendTx);
 };
-Now configure the truffle-config.js file like this...
-where mnemonic is the security phrase of your wallet like MetaMask
+Now configure the truffle-config.js file like this... where mnemonic is the security phrase of your wallet like MetaMask
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const mnemonic = 'Enter your mnemonic here';
@@ -115,11 +118,15 @@ sendTx.js
 const Web3 = require("web3");
 require("dotenv").config({path: __dirname + "/./../process.env"});
 const abiFile = require("../build/contracts/SendTx.json");
+
 const web3 = new Web3(process.env.API_URL);
+
 const pvtKey = process.env.PRIVATE_KEY;
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const accountAddress = process.env.ACCOUNT_ADDRESS;
+
 const contract = new web3.eth.Contract(abiFile.abi, contractAddress);
+
 const sendTransaction = async() =>
 {
     const _from = accountAddress;
@@ -130,6 +137,7 @@ const sendTransaction = async() =>
         gas: 300000,
         data: contract.methods.set(2017).encodeABI()
     }
+
     const signed = await web3.eth.accounts.signTransaction(tx, pvtKey);
     
     web3.eth.sendSignedTransaction(signed.rawTransaction).on(
@@ -145,11 +153,13 @@ getTx.js
 const Web3 = require('web3');
 require("dotenv").config({path: __dirname + "/./../process.env"});
 const abiFile = require("../build/contracts/SendTx.json");
+
 const getTransaction = async()=>
 {
     const web3 = new Web3(process.env.API_URL);
     const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
     const CONTRACT_ABI =  abiFile.abi;
+
     const sendTxContract = new web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
     const getTx = await sendTxContract.methods.get().call()
     console.log("Calling get Function and getting the value of number which is :", getTx);
